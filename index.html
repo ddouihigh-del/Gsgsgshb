@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✨ Auto Video Editor</title>
+
+  <!-- ✅ จำเป็นสำหรับ GitHub Pages — ต้องโหลดก่อนทุกอย่าง -->
+  <script src="coi-serviceworker.js"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      max-width: 800px; margin: 0 auto; padding: 20px;
+      background: #0f0f14; color: #fff; min-height: 100vh;
+    }
+    h1 {
+      background: linear-gradient(90deg, #a78bfa, #f472b6);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent; font-size: 32px; margin-bottom: 8px;
+    }
+    .subtitle { color: #a1a1aa; margin-bottom: 24px; }
+    .box { background: #1a1a24; border-radius: 16px; padding: 24px; margin: 16px 0; }
+    label { display: block; margin: 16px 0 8px; color: #a1a1aa; font-size: 14px; font-weight: 600; }
+    input[type="file"], select {
+      width: 100%; padding: 12px; border-radius: 10px;
+      border: 1px solid #2d2d3a; font-size: 15px;
+      background: #26262f; color: #fff;
+    }
+    input[type="file"]::file-selector-button {
+      background: #3d3d4d; color: #fff; border: none;
+      padding: 8px 14px; border-radius: 6px; cursor: pointer; margin-right: 12px;
+    }
+    button {
+      width: 100%; padding: 14px; border-radius: 10px; border: none;
+      background: linear-gradient(90deg, #a78bfa, #f472b6);
+      color: #000; font-weight: 700; font-size: 16px;
+      cursor: pointer; margin-top: 20px; transition: opacity .2s;
+    }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    button:hover:not(:disabled) { opacity: .9; }
+    video { width: 100%; border-radius: 12px; margin-top: 20px; }
+    #status {
+      color: #a1a1aa; font-size: 14px; margin-top: 16px;
+      padding: 12px; background: #26262f; border-radius: 8px;
+      font-family: 'SF Mono', Consolas, monospace;
+    }
+    #status.ready { color: #4ade80; }
+    #status.error { color: #f87171; }
+    .download-btn {
+      display: block; padding: 14px; margin-top: 16px;
+      background: #a78bfa; color: #000; text-align: center;
+      border-radius: 10px; text-decoration: none; font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <h1>✨ Auto Video Editor</h1>
+  <p class="subtitle">เลือกคลิป → เลือกเพลง → ระบบตัดให้อัตโนมัติ</p>
+
+  <div class="box">
+    <label>🎥 เลือกคลิปวิดีโอ (เลือกได้หลายไฟล์)</label>
+    <input type="file" id="clips" accept="video/*" multiple>
+
+    <label>🎵 เลือกเพลง</label>
+    <input type="file" id="music" accept="audio/*">
+
+    <label>📐 อัตราส่วน</label>
+    <select id="ratio">
+      <option value="1080:1920">แนวตั้ง 9:16 (TikTok / Reels)</option>
+      <option value="1920:1080">แนวนอน 16:9 (YouTube)</option>
+      <option value="1080:1080">จัตุรัส 1:1 (IG Feed)</option>
+    </select>
+
+    <button id="go" disabled>🎬 ตัดต่อให้เลย!</button>
+    <div id="status">⏳ กำลังโหลด FFmpeg...</div>
+  </div>
+
+  <video id="result" controls style="display:none"></video>
+  <div id="downloadSlot"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
